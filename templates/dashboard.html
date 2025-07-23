@@ -8,6 +8,7 @@
 </head>
 <body>
   {% include 'navbar.html' %}
+
   <div class="container">
     <h1>Product Dashboard</h1>
 
@@ -18,7 +19,7 @@
       <button type="submit">Search</button>
     </form>
 
-    <!-- Flash messages -->
+    <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="flash-messages">
@@ -32,27 +33,30 @@
     <!-- Product Grid -->
     <div class="product-grid">
       {% for product in products %}
-      <div class="product-card">
-        <img src="{{ url_for('static', filename='uploads/product_images/' + product.image) }}" alt="{{ product.name }}" />
-        <h3>{{ product.name }}</h3>
-        <p>Serial: {{ product.id }}</p>
-        <p>Category: {{ product.category }}</p>
-        <p>Price: ৳{{ product.sell_price }}</p>
-        <p>Stock: {{ product.quantity }}</p>
+        <div class="product-card">
+          <img src="{{ url_for('static', filename='uploads/product_images/' + product.image) }}" alt="{{ product.name }}" />
+          <h3>{{ product.name }}</h3>
+          <p>Serial: {{ product.id }}</p>
+          <p>Category: {{ product.category }}</p>
+          <p>Price: ৳{{ product.sell_price }}</p>
+          <p>Stock: {{ product.quantity }}</p>
 
-        <!-- Barcode Image -->
-        {% if product.id %}
-          <img src="{{ url_for('static', filename='uploads/barcodes/' + product.id + '.png') }}" alt="Barcode for {{ product.name }}" class="barcode-image" />
-        {% endif %}
+          <!-- Barcode -->
+          {% if product.id %}
+            <div class="barcode-wrapper">
+              <img src="{{ url_for('static', filename='uploads/barcodes/' + product.id + '.png') }}" alt="Barcode for {{ product.name }}" class="barcode-image" />
+            </div>
+          {% endif %}
 
-        <div class="btn-group">
-          <a href="{{ url_for('edit_product', id=product.id) }}" class="btn edit-btn">Edit</a>
-          <a href="{{ url_for('delete_product', id=product.id) }}" class="btn delete-btn" onclick="return confirm('Delete this product?')">Delete</a>
-          <a href="{{ url_for('sell_product', id=product.id) }}" class="btn sell-btn">Sell</a>
+          <!-- Action Buttons -->
+          <div class="btn-group">
+            <a href="{{ url_for('edit_product', id=product.id) }}" class="btn edit-btn">Edit</a>
+            <a href="{{ url_for('delete_product', id=product.id) }}" class="btn delete-btn" onclick="return confirm('Delete this product?')">Delete</a>
+            <a href="{{ url_for('sell_product', id=product.id) }}" class="btn sell-btn">Sell</a>
+          </div>
         </div>
-      </div>
       {% else %}
-        <p>No products yet.</p>
+        <p>No products available.</p>
       {% endfor %}
     </div>
   </div>

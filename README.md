@@ -27,36 +27,17 @@ The Business Records App is a web-based application developed using Python and F
 
 ## Installation
 
-1. Clone the repository:
+### 1. Install Python
 
-   ```bash
-   git clone https://github.com/ADYAN2010/Business-Records-App.git
-   cd Business-Records-App
+Download Python from the official site:  
+👉 [https://www.python.org/downloads/](https://www.python.org/downloads/)
 
+✅ Make sure to check **“Add Python to PATH”** during installation.
 
-## File Structure
+---
 
-Business-Records-App/
-│
-├── app.py                 # Main Flask application
-├── templates/             # HTML templates
-│   ├── login.html
-│   ├── dashboard.html
-│   ├── admin.html
-│   ├── add_product.html
-│   ├── sales.html
-│   ├── barcode_print.html
-│   └── revenue.html
-├── static/                # CSS, images, JS files
-│   └── style.css
-├── database/              # JSON databases
-│   ├── products.json
-│   └── sales.json
-├── uploads/               # Uploaded product images and barcodes
-│   ├── barcodes/
-│   └── product_images/
-└── requirements.txt       # Python dependencies
+### 2. Clone the repository
 
-
-
-
+```bash
+git clone https://github.com/ADYAN2010/Business-Records-App.git
+cd Business-Records-App

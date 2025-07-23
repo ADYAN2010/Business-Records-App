@@ -305,3 +305,93 @@ tbody tr:hover {
   max-width: 100%;
   object-fit: contain;
 }
+
+/* Barcode Position Consistency */
+.product-card .barcode-image {
+  display: block;
+  margin: 10px auto;
+  height: 60px;
+  object-fit: contain;
+  padding: 5px 0;
+}
+
+/* Print & Export Buttons in Navbar */
+.nav-links li .print-btn,
+.nav-links li .export-btn {
+  background-color: #44bd32;
+  padding: 6px 12px;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.nav-links li .export-btn {
+  background-color: #8e44ad;
+}
+
+.nav-links li .print-btn:hover {
+  background-color: #4cd137;
+}
+
+.nav-links li .export-btn:hover {
+  background-color: #9b59b6;
+}
+
+/* Barcode container */
+.barcode-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  margin: 10px 0;
+}
+
+.barcode-image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  padding: 4px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Navbar extras */
+.navbar .nav-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.navbar .nav-actions a {
+  background-color: #00a8ff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: background-color 0.3s ease;
+}
+
+.navbar .nav-actions a:hover {
+  background-color: #0097e6;
+}
+
+.barcode-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  padding: 8px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.barcode-image {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+

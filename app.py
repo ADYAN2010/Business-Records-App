@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 import barcode
 from barcode.writer import ImageWriter
 from functools import wraps
+from fpdf import FPDF
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
@@ -36,12 +37,21 @@ def save_db(path, data):
         json.dump(data, f, indent=4)
 
 def create_and_save_barcode(barcode_val, product_id):
-    font_path = os.path.join(BASE_DIR, "static", "fonts", "DejaVuSans.ttf")  # or any ttf file path you provide
+    font_path = os.path.join(BASE_DIR, "static", "fonts", "DejaVuSans.ttf")
+    if not os.path.exists(font_path):
+        font_path = "C:/Windows/Fonts/arial.ttf"
+
     options = {
         "font_path": font_path,
-        "text_distance": 1,  # optional, adjusts text position
-        "font_size": 14,     # optional font size
+        "module_width": 0.2,
+        "module_height": 15.0,
+        "font_size": 10,
+        "text_distance": 4,       # <- Increase distance between barcode and text
+        "quiet_zone": 2,
+        "dpi": 300,
+        "write_text": True
     }
+
     Code128 = barcode.get_barcode_class('code128')
     code128 = Code128(barcode_val, writer=ImageWriter())
     filepath = os.path.join(BARCODE_FOLDER, f"{product_id}.png")
@@ -85,15 +95,8 @@ def logout():
 def dashboard():
     search = request.args.get('search', '').lower()
     category_filter = request.args.get('category', '').lower()
-
     products = load_db(DB_PRODUCTS)
-
-    filtered = []
-    for p in products:
-        if (search in p['name'].lower() or search in p['id'].lower()) and \
-           (category_filter in p['category'].lower() or not category_filter):
-            filtered.append(p)
-
+    filtered = [p for p in products if (search in p['name'].lower() or search in p['id'].lower()) and (category_filter in p['category'].lower() or not category_filter)]
     return render_template('dashboard.html', products=filtered)
 
 @app.route('/add-product', methods=['GET', 'POST'])
@@ -257,5 +260,39 @@ def barcode_print(id):
         return redirect(url_for('dashboard'))
     return render_template('barcode_print.html', product=product)
 
+@app.route('/print-barcodes')
+@login_required
+def print_barcodes():
+    products = load_db(DB_PRODUCTS)
+    return render_template('barcode_print.html', products=products)
+
+@app.route('/export-pdf')
+@login_required
+def export_pdf():
+    products = load_db(DB_PRODUCTS)
+
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    for product in products:
+        pdf.cell(200, 10, txt=f"{product['name']} - {product['id']} - Price: ৳{product['sell_price']} - Stock: {product['quantity']}", ln=True)
+
+    filepath = os.path.join("uploads", "products_report.pdf")
+    pdf.output(filepath)
+
+    return send_file(filepath, as_attachment=True)
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+EAN = barcode.get_barcode_class('code128')
+my_code = EAN('123456789012', writer=ImageWriter())
+my_code.save('uploads/barcodes/123456789012', {
+    'module_width': 0.2,        # thinner lines
+    'module_height': 15.0,      # taller barcode
+    'font_size': 10,
+    'text_distance': 1,
+    'quiet_zone': 1,
+    'dpi': 300                  # high quality
+})
